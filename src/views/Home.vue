@@ -22,6 +22,7 @@
       <v-file-input
         label="Добавить файлы"
         filled
+        accept="image/png, image/jpeg, image/bmp"
         prepend-icon="mdi-camera"
         class="mt-4"
       ></v-file-input>
