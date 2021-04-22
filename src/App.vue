@@ -2,7 +2,9 @@
   <v-app>
     <v-app-bar color="green" dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title>Система жалоб и предложений</v-app-bar-title>
+      <v-app-bar-title class="white--text">
+          Система жалоб и предложений
+      </v-app-bar-title>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
@@ -23,9 +25,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-content
-      :class="$style.bgContainer"
-    >
+    <v-main :class="$style.bgContainer">
       <v-container class="pa-0">
         <v-row no-gutters>
           <v-col lg="2" md="2" />
@@ -37,7 +37,7 @@
           <v-col lg="2" md="2" />
         </v-row>
       </v-container>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 

@@ -1,24 +1,26 @@
 <template>
   <v-card class="mt-3 mb-5 mx-5">
-    <v-tabs background-color="red lighten-2" dark centered>
+    <v-tabs v-model="tabs" background-color="red lighten-2" dark centered>
       <v-tabs-slider />
-      <v-tab :href="'#tab-1'">Новые заявки</v-tab>
-      <v-tab :href="'#tab-2'">Заявки на проверку</v-tab>
-      <v-tab-item :value="tab-1" v-for="application in applications" :key="application.id">
-        <v-card>
-          <Application class="my-3" v-bind:application="application" />
+      <v-tab>Новые заявки</v-tab>
+      <v-tab>Заявки на проверку</v-tab>
+    </v-tabs>
+    <v-tabs-items v-model="tabs">
+      <v-tab-item>
+        <v-card v-for="application in applications" :key="application.id">
+          <Application class="my-10" v-bind:application="application" />
           <v-card-actions>
-            <v-container class="pa-0">
+            <v-container>
               <v-row no-gutters>
-                <v-col cols="6" class="d-flex align-center">
+                <v-col class="d-flex justify-end align-center pr-3">
                   <v-select
                     :items="authorities"
                     label="Исполнительный орган"
                     dense
                   ></v-select>
                 </v-col>
-                <v-col cols="6">
-                  <v-btn depressed color="primary">
+                <v-col class="d-flex justify-start align-center pr-3">
+                  <v-btn color="success">
                     Отправить на рассмотрение
                   </v-btn>
                 </v-col>
@@ -27,39 +29,46 @@
           </v-card-actions>
         </v-card>
       </v-tab-item>
-      <v-tab-item :value="tab-2" v-for="application in applications" :key="application.id">
-        <v-card>
+      <v-tab-item>
+        <v-card v-for="application in applications" :key="application.id">
           <Application
-            class="ml-4 my-3 ml-2"
+            class="ml-4 my-10 ml-2"
             v-bind:application="application"
           />
           <v-card-actions>
-            <v-container class="pa-0">
+            <v-container>
               <v-row no-gutters>
-                <v-col cols="6" class="d-flex align-center">
-                  <v-btn depressed color="primary"> Опубликовать </v-btn>
+                <v-col class="d-flex justify-end pr-3">
+                  <v-btn
+                    depressed
+                    color="success"
+                    :class="$style.desisionButton"
+                    >Опубликовать</v-btn
+                  >
                 </v-col>
-                <v-col cols="6">
-                  <v-btn depressed color="primary"> Дать комментарий </v-btn>
+                <v-col class="d-flex justify-start pl-3">
+                  <EditorialCommentDialog />
                 </v-col>
               </v-row>
             </v-container>
           </v-card-actions>
         </v-card>
       </v-tab-item>
-    </v-tabs>
+    </v-tabs-items>
   </v-card>
 </template>
 
 <script>
 import Application from "@/components/Application.vue";
+import EditorialCommentDialog from "@/components/EditorialCommentDialog.vue";
 
 export default {
   components: {
     Application,
+    EditorialCommentDialog
   },
   data: () => ({
-    tab: null,
+    tabs: null,
     testApplication: {
       id: 1,
       name: "test",
@@ -88,3 +97,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" module>
+.desisionButton {
+    width: 200px
+}
+</style>
