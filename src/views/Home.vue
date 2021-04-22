@@ -66,10 +66,9 @@ export default {
             },
           })
           .then((response) => {
-            // Todo: show success message
-            this.$router.go();
+            this.$router.push({ name: 'success' }).catch(() => {});
           })
-          .catch((err) => {});
+          .catch((err) => console.log(err));
       }
     },
   },
