@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { http } from "@/api";
 import Application from "@/components/Application.vue";
 
 export default {
@@ -19,17 +20,20 @@ export default {
     Application,
   },
   data: () => ({
-    testApplication: {
-      id: 1,
-      name: "test",
-      description: "test",
-      status: 3,
-    },
+    applications: null,
   }),
-  computed: {
-    applications: function () {
-      return Array.from({ length: 5 }, () => this.testApplication);
+  methods: {
+    getApplications: function () {
+      http
+        .get("api/public/applications/published")
+        .then((response) => {
+          this.applications = response.data.items;
+        })
+        .catch((err) => {});
     },
+  },
+  mounted: function () {
+    this.getApplications();
   },
 };
 </script>
