@@ -4,6 +4,14 @@ import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 import { http } from '@/api'
+import moment from 'moment'
+  
+Vue.config.productionTip = false
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('DD/MM/YYYY')
+  }
+});
 
 Vue.config.productionTip = false;
 
@@ -20,8 +28,8 @@ if (token) {
 }
 
 http.interceptors.response.use(undefined, err => new Promise(((resolve, reject) => {
-  if (err.response.status === 401 && err.config.method !== 'get') {
-    // TODO: logout
+  if (err.response.status === 401) {
+    router.push({ name: 'home' }).catch(() => {});
   }
   reject(err);
 })));

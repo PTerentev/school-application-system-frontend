@@ -30,6 +30,7 @@ export default {
     AuthorityResponseDialog,
   },
   data: () => ({
+    isEmpty: false,
     dialog: false,
     applications: [],
   }),
@@ -37,7 +38,12 @@ export default {
     getApplications: function () {
       http
         .get("api/authority/my/applications")
-        .then((response) => (this.applications = response.data))
+        .then((response) => {
+          this.applications = response.data;
+          if (!response.data.length) {
+            this.isEmpty = true;
+          }
+        })
         .catch((err) => {});
     },
   },

@@ -15,48 +15,31 @@
         </div>
       </v-tab-item>
       <v-tab-item>
-        <v-card v-for="application in applications" :key="application.id">
-          <Application
-            class="ml-4 my-10 ml-2"
-            v-bind:application="application"
-          />
-          <v-card-actions>
-            <v-container>
-              <v-row no-gutters>
-                <v-col class="d-flex justify-end pr-3">
-                  <v-btn
-                    depressed
-                    color="success"
-                    :class="$style.desisionButton"
-                    >Опубликовать</v-btn
-                  >
-                </v-col>
-                <v-col class="d-flex justify-start pl-3">
-                  <EditorialCommentDialog />
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-actions>
-        </v-card>
+        <div
+          v-for="reviewApplication in reviewApplications"
+          :key="reviewApplication.id"
+        >
+          <EditorialReviewApplication :application="reviewApplication" />
+        </div>
       </v-tab-item>
     </v-tabs-items>
+    <v-card-text v-if="isEmpty">Пусто!</v-card-text>
   </v-card>
 </template>
 
 <script>
 import { http } from "@/api";
 import EditorialSendToAuthority from "@/components/EditorialSendToAuthority.vue";
-import Application from "@/components/Application.vue";
-import EditorialCommentDialog from "@/components/EditorialCommentDialog.vue";
-import { APPLICATION_STATUS } from '@/constants';
+import EditorialReviewApplication from "@/components/EditorialReviewApplication.vue";
+import { APPLICATION_STATUS } from "@/constants";
 
 export default {
   components: {
-    Application,
-    EditorialCommentDialog,
     EditorialSendToAuthority,
+    EditorialReviewApplication,
   },
   data: () => ({
+    isEmpty: false,
     tabs: null,
     newApplications: [],
     reviewApplications: [],
@@ -68,20 +51,21 @@ export default {
     },
     authorities: [],
   }),
-  computed: {
-    applications: function () {
-      return Array.from({ length: 5 }, () => this.testApplication);
-    },
-  },
   methods: {
     getApplications: function () {
       http
         .get("/api/editorial/applications/all")
         .then((response) => {
-          if (response.data)
-          {
-            this.newApplications = response.data.filter(a => a.Status === APPLICATION_STATUS.SENT);
-            this.reviewApplications = response.data.filter(a => a.Status === APPLICATION_STATUS.REVIEW);
+          if (response.data.length) {
+            this.newApplications = response.data.filter(
+              (a) => a.status == APPLICATION_STATUS.CHECK
+            );
+            console.log(this.newApplications);
+            this.reviewApplications = response.data.filter(
+              (a) => a.status == APPLICATION_STATUS.REVIEW
+            );
+          } else {
+            this.isEmpty = true;
           }
         })
         .catch((err) => {});

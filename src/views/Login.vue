@@ -57,7 +57,7 @@ export default {
             if (response.data.token) {
               localStorage.setItem("user-token", response.data.token);
               http.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
-              this.$router.push({ name: 'Home' }).catch(() => {});
+              this.$router.push({ name: 'home' }).catch(() => {});
             }
           })
           .catch((err) => {

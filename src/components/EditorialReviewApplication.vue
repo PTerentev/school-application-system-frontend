@@ -4,15 +4,19 @@
     <v-card-actions>
       <v-container>
         <v-row no-gutters>
-          <v-col class="d-flex justify-end pr-3">
-            <v-btn depressed color="success" :class="$style.desisionButton"
+          <v-col cols="12" class="d-flex justify-end py-4">
+            <v-btn depressed color="success" @click="publish"
               >Опубликовать</v-btn
             >
           </v-col>
-          <v-col class="d-flex justify-start pl-3">
+          <v-col class="d-flex justify-end">
             <v-dialog v-model="dialog" width="100%" max-width="600px">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="red lighten-2" v-bind="attrs" v-on="on">
+                <v-btn
+                  color="red lighten-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
                   Дать комментарий
                 </v-btn>
               </template>
@@ -25,7 +29,9 @@
                   </p>
                 </v-card-text>
                 <v-card-actions class="d-flex justify-end">
-                  <v-btn color="red lighten-2"> Отправить </v-btn>
+                  <v-btn color="red lighten-2" @click="resendToAuthority">
+                    Отправить
+                  </v-btn>
                   <v-btn color="primary" @click="dialog = false">
                     Закрыть
                   </v-btn>
@@ -49,6 +55,7 @@ export default {
   },
   props: ["application"],
   data: () => ({
+      dialog: null,
     comments: null,
     isNotValid: false,
   }),
@@ -62,6 +69,11 @@ export default {
         .catch((err) => {});
     },
     resendToAuthority: function () {
+      if (!this.comments) {
+        this.isNotValid = true;
+        return;
+      }
+
       http
         .post(`/api/editorial/applications/${this.application.id}/resend`, {
           editComments: this.comments,
