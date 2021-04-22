@@ -1,90 +1,95 @@
 <template>
   <v-card class="mt-3 mb-5 mx-5">
-    <v-tabs background-color="red lighten-2" dark centered>
+    <v-tabs v-model="tabs" background-color="red lighten-2" dark centered>
       <v-tabs-slider />
-      <v-tab :href="'#tab-1'">Новые заявки</v-tab>
-      <v-tab :href="'#tab-2'">Заявки на проверку</v-tab>
-      <v-tab-item :value="tab-1" v-for="application in applications" :key="application.id">
-        <v-card>
-          <Application class="my-3" v-bind:application="application" />
-          <v-card-actions>
-            <v-container class="pa-0">
-              <v-row no-gutters>
-                <v-col cols="6" class="d-flex align-center">
-                  <v-select
-                    :items="authorities"
-                    label="Исполнительный орган"
-                    dense
-                  ></v-select>
-                </v-col>
-                <v-col cols="6">
-                  <v-btn depressed color="primary">
-                    Отправить на рассмотрение
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-actions>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item :value="tab-2" v-for="application in applications" :key="application.id">
-        <v-card>
-          <Application
-            class="ml-4 my-3 ml-2"
-            v-bind:application="application"
-          />
-          <v-card-actions>
-            <v-container class="pa-0">
-              <v-row no-gutters>
-                <v-col cols="6" class="d-flex align-center">
-                  <v-btn depressed color="primary"> Опубликовать </v-btn>
-                </v-col>
-                <v-col cols="6">
-                  <v-btn depressed color="primary"> Дать комментарий </v-btn>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-actions>
-        </v-card>
-      </v-tab-item>
+      <v-tab>Новые заявки</v-tab>
+      <v-tab>Заявки на проверку</v-tab>
     </v-tabs>
+    <v-tabs-items v-model="tabs">
+      <v-tab-item>
+        <div v-for="newApplication in newApplications" :key="newApplication.id">
+          <EditorialSendToAuthority
+            :application="newApplication"
+            :authorities="authorities"
+          />
+        </div>
+      </v-tab-item>
+      <v-tab-item>
+        <div
+          v-for="reviewApplication in reviewApplications"
+          :key="reviewApplication.id"
+        >
+          <EditorialReviewApplication :application="reviewApplication" />
+        </div>
+      </v-tab-item>
+    </v-tabs-items>
+    <v-card-text v-if="isEmpty">Пусто!</v-card-text>
   </v-card>
 </template>
 
 <script>
-import Application from "@/components/Application.vue";
+import { http } from "@/api";
+import EditorialSendToAuthority from "@/components/EditorialSendToAuthority.vue";
+import EditorialReviewApplication from "@/components/EditorialReviewApplication.vue";
+import { APPLICATION_STATUS } from "@/constants";
 
 export default {
   components: {
-    Application,
+    EditorialSendToAuthority,
+    EditorialReviewApplication,
   },
   data: () => ({
-    tab: null,
+    isEmpty: false,
+    tabs: null,
+    newApplications: [],
+    reviewApplications: [],
     testApplication: {
       id: 1,
       name: "test",
       description: "test",
       status: 3,
     },
-    authorities: [
-      {
-        text: "Authority 1",
-        value: 1,
-      },
-      {
-        text: "Authority 2",
-        value: 2,
-      },
-      {
-        text: "Authority 3",
-        value: 3,
-      },
-    ],
+    authorities: [],
   }),
-  computed: {
-    applications: function () {
-      return Array.from({ length: 5 }, () => this.testApplication);
+  methods: {
+    getApplications: function () {
+      http
+        .get("/api/editorial/applications/all")
+        .then((response) => {
+          if (response.data.length) {
+            this.newApplications = response.data.filter(
+              (a) => a.status == APPLICATION_STATUS.CHECK
+            );
+            console.log(this.newApplications);
+            this.reviewApplications = response.data.filter(
+              (a) => a.status == APPLICATION_STATUS.REVIEW
+            );
+          } else {
+            this.isEmpty = true;
+          }
+        })
+        .catch((err) => {});
     },
+    getAuthorities: function () {
+      http
+        .get("api/editorial/authorities")
+        .then((response) => {
+          if (response.data) {
+            this.authorities = response.data;
+          }
+        })
+        .catch((err) => {});
+    },
+  },
+  mounted: function () {
+    this.getApplications();
+    this.getAuthorities();
   },
 };
 </script>
+
+<style lang="scss" module>
+.desisionButton {
+  width: 200px;
+}
+</style>
