@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import { http } from "@/api";
+
 export default {
   data: () => ({
     valid: false,
@@ -53,7 +55,21 @@ export default {
     sendApplication() {
       this.$refs.form.validate();
       if (this.valid) {
-        // Send....
+        const formData = new FormData();
+        formData.append("name", this.name);
+        formData.append("description", this.about);
+
+        http
+          .post("/api/applicant/applications", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            // Todo: show success message
+            this.$router.go();
+          })
+          .catch((err) => {});
       }
     },
   },
@@ -61,9 +77,9 @@ export default {
 </script>
 
 <style lang="scss" module>
-  @import "../styles/base";
-  .bgContainer {
-    width: 100%;
-    height: 100%;
-  }
+@import "../styles/base";
+.bgContainer {
+  width: 100%;
+  height: 100%;
+}
 </style>

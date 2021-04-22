@@ -64,7 +64,7 @@ export default {
         link: "/editorial",
       },
       {
-        name: "Исполнительные орган",
+        name: "Исполнительные органы",
         link: "/authority",
       },
       {
