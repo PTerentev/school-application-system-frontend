@@ -2,9 +2,11 @@
   <v-app>
     <v-app-bar color="green" dense>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-app-bar-title class="white--text">
-          Система жалоб и предложений
-      </v-app-bar-title>
+      <router-link to="/">
+        <v-app-bar-title class="white--text">
+            Система жалоб и предложений
+        </v-app-bar-title>
+      </router-link>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-dots-vertical</v-icon>
@@ -88,5 +90,8 @@ export default {
   height: 100%;
   display: flex;
   justify-content: center;
+}
+a { 
+  text-decoration: none; 
 }
 </style>
