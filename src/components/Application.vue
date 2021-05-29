@@ -26,7 +26,7 @@
           <p>{{ application.reply.text }}</p>
         </v-card-text>
         <v-card-text>
-          <p>Дата закрытия запроса: {{ application.closeDate | formatDate }}</p>
+          <p>Дата ответа на запрос: {{ application.reply.lastChangeDate | formatDate }}</p>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
