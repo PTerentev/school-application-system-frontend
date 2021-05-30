@@ -9,12 +9,17 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
   },
   {
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/success',
+    name: 'success',
+    component: () => import(/* webpackChunkName: "about" */ '../views/ApplicationSuccess.vue')
   },
   {
     path: '/published',
@@ -35,6 +40,11 @@ const routes = [
     path: '/authority',
     name: 'authority',
     component: () => import(/* webpackChunkName: "about" */ '../views/Authority.vue'),
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Admin.vue'),
   },
 ];
 

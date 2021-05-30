@@ -7,24 +7,39 @@
       <v-text-field
         v-model="name"
         :rules="nameRules"
-        label="Название"
+        label="Название*"
         required
       ></v-text-field>
 
       <v-textarea
         v-model="about"
         :rules="aboutRules"
-        label="Описание"
+        label="Описание*"
         required
       ></v-textarea>
+
+      <v-spacer />
+
+      <v-select
+        v-model="selectedApplicationTypeId"
+        :items="applicationTypes"
+        item-value="id"
+        item-text="name"
+        label="Тематика заявления"
+        dense
+        clearable
+      ></v-select>
+
       <v-spacer />
 
       <v-file-input
         label="Добавить файлы"
         filled
-        accept="image/png, image/jpeg, image/bmp"
+        accept="image/*, video/*"
         prepend-icon="mdi-camera"
-        class="mt-4"
+        class="mt-6"
+        multiple
+        @change="selectFile"
       ></v-file-input>
 
       <v-btn
@@ -36,6 +51,9 @@
         Отправить заявление
       </v-btn>
     </v-form>
+      <p v-if="showErrorMessage" class="mt-10 red--text">
+        Пожалуйста, введите правильные данные
+      </p>
   </v-card>
 </template>
 
@@ -49,6 +67,10 @@ export default {
     about: "",
     nameRules: [(v) => !!v || "Название необходимо"],
     aboutRules: [(v) => !!v || "Описание необходимо"],
+    applicationTypes: [],
+    selectedApplicationTypeId: null,
+    files: null,
+    showErrorMessage: false
   }),
 
   methods: {
@@ -59,6 +81,18 @@ export default {
         formData.append("name", this.name);
         formData.append("description", this.about);
 
+        if (this.selectedApplicationTypeId != null)
+        {
+          formData.append("applicationTypeId", this.selectedApplicationTypeId);
+        }
+
+        if (this.files != null)
+        {
+          for (let file of this.files) {
+            formData.append("formFiles", file);
+          }
+        }
+
         http
           .post("/api/applicant/applications", formData, {
             headers: {
@@ -66,12 +100,32 @@ export default {
             },
           })
           .then((response) => {
-            // Todo: show success message
-            this.$router.go();
+            this.$router.push({ name: "success" }).catch(() => {});
           })
-          .catch((err) => {});
+          .catch((err) =>
+          {
+            console.log(err.data);
+            this.showErrorMessage = true;
+          });
       }
     },
+    getApplicationTypes() {
+      http
+        .get("/api/applicant/applications/types")
+        .then((response) => {
+          if (response.data) {
+            this.applicationTypes = response.data;
+          }
+        })
+        .catch((err) => {});
+    },
+    selectFile(files) {
+      this.files = files;
+      console.log(this.files);
+    },
+  },
+  mounted: function () {
+    this.getApplicationTypes();
   },
 };
 </script>
