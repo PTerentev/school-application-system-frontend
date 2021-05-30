@@ -22,6 +22,8 @@ new Vue({
   render: (h) => h(App),
 }).$mount('#app');
 
+document.title = "Система жалоб и предложений";
+
 const token = localStorage.getItem('user-token');
 if (token) {
   http.defaults.headers.common.Authorization = `Bearer ${token}`;
