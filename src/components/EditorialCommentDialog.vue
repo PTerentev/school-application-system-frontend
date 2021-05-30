@@ -11,7 +11,7 @@
         <v-textarea
           v-model="about"
           :rules="aboutRules"
-          label="Комментарий"
+          label="Комментарий*"
           required
         />
       </v-card-text>

@@ -7,14 +7,14 @@
       <v-text-field
         v-model="name"
         :rules="nameRules"
-        label="Название"
+        label="Название*"
         required
       ></v-text-field>
 
       <v-textarea
         v-model="about"
         :rules="aboutRules"
-        label="Описание"
+        label="Описание*"
         required
       ></v-textarea>
 
