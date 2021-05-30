@@ -18,6 +18,14 @@
       </v-card-actions>
     </v-card>
     <div class="mr-6 mb-5 ml-1">
+      <v-card v-if="showEditComments">
+        <v-card-title>
+          <p>Комментарий из редакции</p>
+        </v-card-title>
+        <v-card-text>
+          <p>{{ application.reply.editComments }}</p>
+        </v-card-text>
+      </v-card>
       <v-card v-if="showReply">
         <v-card-title>
           <p>Ответ</p>
@@ -30,7 +38,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <Attachments v-bind:attachments="application.replyAttachments" />
+          <Attachments v-bind:attachments="application.reply.attachments" />
         </v-card-actions>
       </v-card>
       <v-card v-if="showRejectComments">
@@ -56,6 +64,11 @@ export default {
   props: ["application"],
   data: () => ({}),
   computed: {
+    showEditComments: function () {
+      return this.application.reply != null 
+              && this.application.status === APPLICATION_STATUS.SENT
+              && this.application.reply.editComments != null;
+    },
     showReply: function () {
       switch (this.application.status) {
         case APPLICATION_STATUS.REVIEW:
