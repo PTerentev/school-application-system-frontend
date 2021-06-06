@@ -54,8 +54,12 @@ export default {
         link: "/",
       },
       {
-        name: "Аккаунт",
+        name: "Вход",
         link: "/login",
+      },
+            {
+        name: "Регистрация",
+        link: "/register",
       },
       {
         name: "Админ",
