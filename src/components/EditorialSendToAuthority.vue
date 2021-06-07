@@ -13,6 +13,7 @@
               item-text="name"
               label="Исполнительный орган"
               dense
+              menu-props="auto"
               required
             ></v-select>
           </v-col>

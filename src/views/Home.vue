@@ -28,6 +28,7 @@
         label="Тематика заявления"
         dense
         clearable
+        menu-props="auto"
       ></v-select>
 
       <v-spacer />

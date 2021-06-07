@@ -1,7 +1,8 @@
 const axios = require('axios');
+const { apiUrl } = require('../config')
 
 export const http = axios.create({
-  baseURL: 'https://localhost:44308',
+  baseURL: apiUrl,
   headers: {
     'Content-Type': 'application/json',
   },

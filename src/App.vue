@@ -54,8 +54,12 @@ export default {
         link: "/",
       },
       {
-        name: "Аккаунт",
+        name: "Вход",
         link: "/login",
+      },
+            {
+        name: "Регистрация",
+        link: "/register",
       },
       {
         name: "Админ",
@@ -85,7 +89,7 @@ export default {
   height: 100%;
   background-image: url("./assets/img/school-background.jpg");
   background-repeat: repeat;
-  background-size: contain;
+  background-size: 100% 100%;
   padding: 0;
   height: 100%;
   display: flex;

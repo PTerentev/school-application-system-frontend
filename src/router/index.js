@@ -22,6 +22,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/ApplicationSuccess.vue')
   },
   {
+    path: '/register-success',
+    name: 'registerSuccess',
+    component: () => import(/* webpackChunkName: "about" */ '../views/RegisterSuccess.vue')
+  },
+  {
     path: '/published',
     name: 'published',
     component: () => import(/* webpackChunkName: "about" */ '../views/PublishedApplications.vue')
@@ -45,6 +50,11 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: () => import(/* webpackChunkName: "about" */ '../views/Admin.vue'),
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Register.vue'),
   },
 ];
 
