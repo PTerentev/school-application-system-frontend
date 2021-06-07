@@ -4,7 +4,11 @@
       <v-card-text class="d-flex justify-center">
         <h2 class="font-weight-black">Добавить исполнительный орган</h2>
       </v-card-text>
-      <v-form ref="addAuthorityForm" v-model="addAuthorityFormValid" lazy-validation>
+      <v-form
+        ref="addAuthorityForm"
+        v-model="addAuthorityFormValid"
+        lazy-validation
+      >
         <v-text-field
           v-model="addAuthorityName"
           :rules="nameRules"
@@ -32,7 +36,11 @@
       <v-card-text class="d-flex justify-center">
         <h2 class="font-weight-black">Добавить тематику для заявлений</h2>
       </v-card-text>
-      <v-form ref="addApplicationTypeForm" v-model="addApplicationTypeFormValid" lazy-validation>
+      <v-form
+        ref="addApplicationTypeForm"
+        v-model="addApplicationTypeFormValid"
+        lazy-validation
+      >
         <v-text-field
           v-model="addApplicationTypeName"
           :rules="nameRules"
@@ -44,6 +52,7 @@
           :items="authorities"
           item-value="id"
           item-text="name"
+          menu-props="auto"
           label="Исполнительные органы"
           dense
         ></v-select>
@@ -62,13 +71,18 @@
       <v-card-text class="d-flex justify-center">
         <h2 class="font-weight-black">Добавить роль юзеру</h2>
       </v-card-text>
-      <v-form ref="addUserToRoleForm" v-model="addUserToRoleFormValid" lazy-validation>
+      <v-form
+        ref="addUserToRoleForm"
+        v-model="addUserToRoleFormValid"
+        lazy-validation
+      >
         <v-select
           v-model="addUserToRoleFormSelectedUserId"
           :items="users"
           item-value="id"
           item-text="fullName"
           label="Пользователь"
+          menu-props="auto"
           dense
           required
         ></v-select>
@@ -77,6 +91,7 @@
           :items="roles"
           item-value="id"
           item-text="name"
+          menu-props="auto"
           label="Роль"
           dense
           required
@@ -92,17 +107,24 @@
         </v-btn>
       </v-form>
     </v-card>
-        <v-card class="px-6 py-4 mt-4">
+    <v-card class="px-6 py-4 mt-4">
       <v-card-text class="d-flex justify-center">
-        <h2 class="font-weight-black">Добавить пользователя в исполнительный орган</h2>
+        <h2 class="font-weight-black">
+          Добавить пользователя в исполнительный орган
+        </h2>
       </v-card-text>
-      <v-form ref="addUserToAuthorityForm" v-model="addUserToAuthorityFormValid" lazy-validation>
+      <v-form
+        ref="addUserToAuthorityForm"
+        v-model="addUserToAuthorityFormValid"
+        lazy-validation
+      >
         <v-select
           v-model="addUserToAuthorityFormSelectedUserId"
           :items="users"
           item-value="id"
           item-text="fullName"
           label="Пользователь"
+          menu-props="auto"
           dense
           required
         ></v-select>
@@ -112,6 +134,7 @@
           item-value="id"
           item-text="name"
           label="Исполнительный орган"
+          menu-props="auto"
           dense
           required
         ></v-select>
@@ -177,10 +200,13 @@ export default {
 
       if (this.addUserToRoleFormValid) {
         const data = {
-          roleId: this.addUserToRoleFormSelectedRoleId
-        }
+          roleId: this.addUserToRoleFormSelectedRoleId,
+        };
         http
-          .post(`/api/admin/users/${this.addUserToRoleFormSelectedUserId}/role`, data)
+          .post(
+            `/api/admin/users/${this.addUserToRoleFormSelectedUserId}/role`,
+            data
+          )
           .then((response) => {
             console.log(response);
             this.$router.go();
@@ -195,10 +221,13 @@ export default {
 
       if (this.addAuthorityFormValid) {
         const data = {
-          userId: this.addUserToAuthorityFormSelectedUserId
-        }
+          userId: this.addUserToAuthorityFormSelectedUserId,
+        };
         http
-          .post(`/api/admin/authorities/${this.addUserToAuthorityFormSelectedAuthorityId}/user`, data)
+          .post(
+            `/api/admin/authorities/${this.addUserToAuthorityFormSelectedAuthorityId}/user`,
+            data
+          )
           .then((response) => {
             console.log(response);
             this.$router.go();
@@ -213,10 +242,13 @@ export default {
 
       if (this.addAuthorityFormValid) {
         const data = {
-          name: this.addApplicationTypeName
-        }
+          name: this.addApplicationTypeName,
+        };
         http
-          .post(`/api/admin/authorities/${this.addApplicationTypeAuthorityId}/type`, data)
+          .post(
+            `/api/admin/authorities/${this.addApplicationTypeAuthorityId}/type`,
+            data
+          )
           .then((response) => {
             console.log(response);
             this.$router.go();
@@ -231,8 +263,8 @@ export default {
       if (this.addAuthorityFormValid) {
         const data = {
           name: this.addAuthorityName,
-          description: this.addAuthorityAbout
-        }
+          description: this.addAuthorityAbout,
+        };
         http
           .post("/api/admin/authorities", data)
           .then((response) => {
